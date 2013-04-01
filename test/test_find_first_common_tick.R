@@ -1,24 +1,18 @@
 # A script to test find_first_common_tick()
 
-
 source("../find_first_common_tick.R")
-
 ticks_1 <- read.csv("AUDCAD_1.csv")
 ticks_1[, 1] <- as.POSIXct(ticks_1[, 1])
-
 ticks_2 <- read.csv("AUDCAD_2.csv")
 ticks_2[, 1] <- as.POSIXct(ticks_2[, 1])
 
 print("Initial ticks data frame 1: ")
 print(head(ticks_1))
-
 print("Initial ticks data frame 2: ")
 print(head(ticks_2))
-
 print("Now let's find common first tick")
 
-# sync up to first common tick
-start <- find_first_common_tick(ticks_list)
+start <- find_first_common_tick(ticks_list) # sync up to first common tick
 
 print("The starting indexes are: ")
 print(start)

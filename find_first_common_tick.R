@@ -19,14 +19,15 @@ find_first_common_tick <- function(ticks_list) {
 	# ticks_df_1 <- ticks_df_1[start[1]:nrow(ticks_df_1), ]
 	# ticks_df_2 <- ticks_df_2[start[2]:nrow(ticks_df_2), ]
 
-	x <- ticks_list[[1]] # for easier code reading
+	x <- ticks_list[[1]] # shorter names for easier code reading
 	y <- ticks_list[[2]]  
 
 	ix <- 1 # index of the first common tick in the first data frame
 	iy <- 1 # and in the second
 
 	if (!isTRUE(all.equal(x[1:3, 2:3], y[1:3, 2:3], F))) {
-		# perform a rough find first based on timestamp. Saves computation time
+		# perform first rough sync based on timestamp. 
+		# Saves computation time later for highly out of sync tick files
 		common_starting_time <- max(x[1, 1], y[1, 1]) 
 		ix <- min(which(x[, 1] >= common_starting_time)) 
 		iy <- min(which(y[, 1] >= common_starting_time))

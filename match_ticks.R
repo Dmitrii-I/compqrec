@@ -1,6 +1,6 @@
-match_ticks <- function(ticks_list) {
-	# Returns a data frame with side-by-side mathced ticks from two 
-	# ticks data frames. If not match was found for a ticks,
+match_ticks <- function(x, y) {
+	# Returns a data frame with side-by-side matched ticks from two 
+	# ticks data frames: x and y. If not match was found for a ticks,
 	# NA is displayed. This allows you to identify which ticks that were not
 	# recorded. Knowing which ticks were missed allows you to compare
 	# the data recording instances that produced the two ticks dataframes.
@@ -10,10 +10,6 @@ match_ticks <- function(ticks_list) {
 	#
 	# ticks_list: a list with of two ticks data frames.
 	
-	# use shorter names, as we will refer to ticks_list often
-	x <- ticks_list[[1]]
-	y <- ticks_list[[2]]
-
 	# Sync dataframes to first common tick, purge leading redundant ticks
 	# if needed
 	starting_indexes <- find_first_common_tick(list(x, y))
@@ -26,11 +22,12 @@ match_ticks <- function(ticks_list) {
 	iy <- 2L
 	i <- 1L
 
-	# pre-allocate to max to avoid expanding vectors edynamically (costly)
+	# pre-allocate to max to avoid expanding vectors dynamically (costly)
 	missed_x <- rep(NA, max(nrow(x), nrow(y))) 
 	missed_y <- missed_x 
 
-	window_size <- 9 # set to max number of consecutive missed ticks
+	window_size <- 9 # set to max number of possible 
+					 # consecutive lost ticks
 	
 	while (ix < nrow(x) && iy <= nrow(y)) { # < and <= is not a mistake
 		if (!isTRUE(all.equal(x[ix, 2:3], y[iy, 2:3], F))) {
@@ -44,11 +41,13 @@ match_ticks <- function(ticks_list) {
 			# to find matching ticks 
 			last <- max(x[last_x, 1], y[last_y, 1])
 			last_x <- rev(which(x[, 1] <= last))[1]
-			last_y <- rev(which(y[, 1] <- last))[1]
+			last_y <- rev(which(y[, 1] <= last))[1]
 			
 			# Find the longest common subsequence
-			lcs <- LCS(list(x[ix:last_x, ] y[iy:last_y, ]))
+			lcs <- lcs(x[ix:last_x, ], y[iy:last_y, ])
 
+
+			# Using lcs to match the ticks
 			if (nrow(lcs) != 0) {
 				if (isTRUE(all.equal(x[ix, 2:3], lcs[1, 2:3], F))) {
 					missed_x[i] <- ix - 0.99999 / ix 
@@ -102,5 +101,5 @@ match_ticks <- function(ticks_list) {
 	y <- y[order(c(1:(nrow(y) - length(missed_y)), missed_y)), ]
  
 	n <- min(nrow(x), nrow(y)) - 1
-	return(list(x[1:n, ], y[1:n, ]))
+	return(cbind(x[1:n, ], y[1:n, ]))
 }
