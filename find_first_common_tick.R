@@ -8,7 +8,7 @@ find_first_common_tick <- function(ticks_list) {
 	# each data frame have same bid and ask prices.
 	#
 	# The function assumes there is ALWAYS a first common tick. If not
-	# you will get runtime error. 
+	# your computer will explode. 
 	#
 	# Example:
 	# You have collected ticks of same instrument on two different servers. 

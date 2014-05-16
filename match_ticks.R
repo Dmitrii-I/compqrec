@@ -1,23 +1,24 @@
 match_ticks <- function(x, y) {
 	# Returns a data frame with side-by-side matched ticks from two 
 	# ticks data frames: x and y. If not match was found for a ticks,
-	# NA is displayed. This allows you to identify which ticks that were not
-	# recorded. Knowing which ticks were missed allows you to compare
-	# the data recording instances that produced the two ticks dataframes.
+	# NA is displayed. This allows you to identify which ticks were not
+	# recorded by either of the recorders. Knowing which ticks were 
+	# missed allows comparing of data recording instances that produced 
+	# the two ticks data frames.
 	#
 	# When  the data recording instances are on different servers, 
 	# you are in essence comparing which server records the ticks best.
 	#
-	# ticks_list: a list with of two ticks data frames.
+	# x, y:	tick data frame
 	
-	# Sync dataframes to first common tick, purge leading redundant ticks
+	# Sync data frames to first common tick; purge leading redundant ticks
 	# if needed
-	starting_indexes <- find_first_common_tick(list(x, y))
-	x <- x[starting_indexes[1]:nrow(x), ]
-	y <- y[starting_indexes[2]:nrow(y), ]
+	start <- find_first_common_tick(list(x, y))
+	x <- x[start[1]:nrow(x), ]
+	y <- y[start[2]:nrow(y), ]
 
-	# index variable of the ticks we are comparing. Start from second
-	# tick, as first ticks already match
+	# index vars of data frames; start from second tick, as first ticks
+	# already match
 	ix <- 2L
 	iy <- 2L
 	i <- 1L
