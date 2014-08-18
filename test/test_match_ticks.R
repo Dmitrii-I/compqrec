@@ -8,3 +8,5 @@ ticks1[, 1] <- as.POSIXct(ticks1[, 1])
 ticks2[, 1] <- as.POSIXct(ticks2[, 1])
 
 matched_ticks <- match_ticks(ticks1, ticks2)
+
+

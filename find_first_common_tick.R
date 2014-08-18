@@ -25,7 +25,7 @@ find_first_common_tick <- function(ticks_list) {
 	ix <- 1 # index of the first common tick in the first data frame
 	iy <- 1 # and in the second
 
-	if (!isTRUE(all.equal(x[1:3, 2:3], y[1:3, 2:3], F))) {
+	if (!identical(x[1:3, 2:3], y[1:3, 2:3])) {
 		# perform first rough sync based on timestamp. 
 		# Saves computation time later for highly out of sync tick files
 		common_starting_time <- max(x[1, 1], y[1, 1]) 
@@ -33,7 +33,7 @@ find_first_common_tick <- function(ticks_list) {
 		iy <- min(which(y[, 1] >= common_starting_time))
 	 
 		# now do a tick by tick step-forward comparison
-		while (!isTRUE(all.equal(x[ix:(ix+2), 2:3], y[iy:(iy+2), 2:3], F))) {
+		while (!identical(x[ix:(ix+5), 2:3], y[iy:(iy+5), 2:3])) {
 			common_starting_time <- min(x[ix, 1], y[iy, 1])
 			ix <- min(which(x[, 1] > common_starting_time))
 			iy <- min(which(y[, 1] > common_starting_time))

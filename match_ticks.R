@@ -31,7 +31,7 @@ match_ticks <- function(x, y) {
 					 # consecutive lost ticks
 	
 	while (ix < nrow(x) && iy <= nrow(y)) { # < and <= is not a mistake
-		if (!isTRUE(all.equal(x[ix, 2:3], y[iy, 2:3], F))) {
+		if (!isTRUE(all.equal(x[ix, 2:3], y[iy, 2:3], check.attributes=F))) {
 			# indexes of last ticks used in comparison
 			last_x <- min(ix + window_size, nrow(x)) 
 			last_y <- min(iy + window_size, nrow(y))
@@ -50,10 +50,10 @@ match_ticks <- function(x, y) {
 
 			# Using lcs to match the ticks
 			if (nrow(lcs) != 0) {
-				if (isTRUE(all.equal(x[ix, 2:3], lcs[1, 2:3], F))) {
+				if (isTRUE(all.equal(x[ix, 2:3], lcs[1, 2:3], check.attributes=F))) {
 					missed_x[i] <- ix - 0.99999 / ix 
 					iy <- iy + 1
-				} else if (isTRUE(all.equal(y[iy, 2:3], lcs[1, 2:3], F))) {
+				} else if (isTRUE(all.equal(y[iy, 2:3], lcs[1, 2:3], check.attributes=F))) {
 					missed_y[i] <- iy - 0.99999 / iy 
 					ix <- ix + 1
 				} else { # if both  quotes are unequal to each other and the first LCS item
